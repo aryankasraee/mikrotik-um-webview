@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Account Info</title>
 </head>
 <body>
     <h1>Account Info</h1>
     {% if user_info %}
-    <p>Username: {{ user_info.name }}</p>
-    <p>First Name: {{ user_info['first-name'] }}</p>
-    <p>Last Shared User: {{ user_info['shared-user'] }}</p>
-    <p>Email: {{ user_info.email }}</p>
+        <p><strong>User:</strong> {{ user_info.user }}</p>
+        <p><strong>Profile:</strong> {{ user_info.profile }}</p>
+        <p><strong>State:</strong> {{ user_info.state }}</p>
+        <p><strong>End Time:</strong> {{ user_info['end-time'] }}</p>
     {% else %}
-    <p>{{ error }}</p>
+        <p>{{ error }}</p>
     {% endif %}
     <a href="/">Check another account</a>
 </body>
