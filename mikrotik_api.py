@@ -12,10 +12,15 @@ API_PASSWORD = os.getenv('API_PASSWORD')
 API_HOST = os.getenv('API_HOST')
 
 def get_user_info(username):
+    # Split host and port if provided
+    host, port = (API_HOST.split(':') + [None])[:2]
+    port = int(port) if port else 8728  # Default port is 8728
+
     connection = connect(
         username=API_USER,
         password=API_PASSWORD,
-        host=API_HOST,
+        host=host,
+        port=port,
         ssl_wrapper=ssl_context.wrap_socket
     )
 
