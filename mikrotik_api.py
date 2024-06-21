@@ -27,7 +27,7 @@ def get_user_info(username):
         logger.info("Connected successfully to MikroTik router")
 
         # Fetch user information
-        users = connection('/user-manager/user/print', **{'?name': username})
+        users = list(connection('/user-manager/user/print', **{'?name': username}))
         
         if not users:
             logger.warning(f"User '{username}' not found")
@@ -37,7 +37,7 @@ def get_user_info(username):
         user_id = user.get('.id')
 
         # Fetch user profile information
-        user_profiles = connection('/user-manager/user-profile/print', **{'?user': user_id})
+        user_profiles = list(connection('/user-manager/user-profile/print', **{'?user': user_id}))
         
         if not user_profiles:
             logger.warning(f"Profile for user '{username}' not found")
@@ -57,7 +57,7 @@ def get_user_info(username):
         return user_info
 
     except Exception as e:
-        logger.error(f"Error in get_user_info: {e}")
+        logger.error(f"Error in get_user_info: {e}", exc_info=True)
         return None
 
 # Example usage
