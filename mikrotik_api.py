@@ -1,11 +1,5 @@
 import os
 from librouteros import connect
-import ssl
-
-# Disable SSL certificate verification
-ssl_context = ssl.create_default_context()
-ssl_context.check_hostname = False
-ssl_context.verify_mode = ssl.CERT_NONE
 
 API_USER = os.getenv('API_USER')
 API_PASSWORD = os.getenv('API_PASSWORD')
@@ -16,12 +10,13 @@ def get_user_info(username):
     host, port = (API_HOST.split(':') + [None])[:2]
     port = int(port) if port else 8728  # Default port is 8728
 
+    # Connect without SSL for port 8728
     connection = connect(
         username=API_USER,
         password=API_PASSWORD,
         host=host,
         port=port,
-        ssl_wrapper=ssl_context.wrap_socket
+        # Remove ssl_wrapper argument for non-SSL connection
     )
 
     for user in connection('/tool/user-manager/user/print'):
