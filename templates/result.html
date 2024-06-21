@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Info</title>
+</head>
+<body>
+    <h1>Account Info</h1>
+    {% if user_info %}
+    <p>Username: {{ user_info.username }}</p>
+    <p>First Name: {{ user_info['first-name'] }}</p>
+    <p>Last Name: {{ user_info['last-name'] }}</p>
+    <p>Email: {{ user_info.email }}</p>
+    {% else %}
+    <p>{{ error }}</p>
+    {% endif %}
+    <a href="/">Check another account</a>
+</body>
+</html>
