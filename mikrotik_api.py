@@ -22,7 +22,7 @@ def get_user_info(username):
         users = connection('/user-manager/user/print')
 
         for user in users:
-            if user.get('name') == username:  # Adjust 'name' according to your MikroTik user structure
+            if user.get('name') == username:
                 return user
 
     except Exception as e:
@@ -32,10 +32,12 @@ def get_user_info(username):
 
 # Example usage
 if __name__ == "__main__":
-    username_to_check = 'aryan'  # Replace with the username you're searching for
+    # Example of retrieving username dynamically (e.g., from user input or web form)
+    username_to_check = input("Enter username to check: ")
+
     user_info = get_user_info(username_to_check)
     if user_info:
-        print(f"Account Info:")
+        print(f"Account Info for '{username_to_check}':")
         for key, value in user_info.items():
             print(f"  {key}: {value}")
     else:
