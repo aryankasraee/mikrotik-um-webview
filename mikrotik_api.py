@@ -11,7 +11,6 @@ API_PASSWORD = os.getenv('API_PASSWORD')
 API_HOST = os.getenv('API_HOST')
 
 def get_user_info(username):
-    # Split host and port if provided
     host, port = (API_HOST.split(':') + [None])[:2]
     port = int(port) if port else 8728  # Default port is 8728
 
@@ -26,24 +25,27 @@ def get_user_info(username):
         )
         logger.info("Connected successfully to MikroTik router")
 
-        # Fetch user information
-        users = list(connection('/user-manager/user/print', **{'?name': username}))
+        # Fetch all users
+        users = list(connection('/user-manager/user/print'))
         
-        if not users:
+        # Find the user with matching username
+        user = next((u for u in users if u.get('name') == username), None)
+        
+        if not user:
             logger.warning(f"User '{username}' not found")
             return None
 
-        user = users[0]
         user_id = user.get('.id')
 
-        # Fetch user profile information
-        user_profiles = list(connection('/user-manager/user-profile/print', **{'?user': user_id}))
+        # Fetch all user profiles
+        user_profiles = list(connection('/user-manager/user-profile/print'))
         
-        if not user_profiles:
+        # Find the profile for the user
+        user_profile = next((p for p in user_profiles if p.get('user') == user_id), None)
+        
+        if not user_profile:
             logger.warning(f"Profile for user '{username}' not found")
             return None
-
-        user_profile = user_profiles[0]
 
         # Merge user and user profile information
         user_info = {
