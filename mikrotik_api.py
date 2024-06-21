@@ -24,13 +24,13 @@ def get_user_info(username):
         for user in users:
             if user.get('name') == username:
                 user_id = user.get('.id')
-                # Fetch user profile information based on user ID
-                user_profiles = connection('/user-manager/user-profile/print', **{'?user': user_id})
+                # Fetch user profile information based on username
+                user_profiles = connection('/user-manager/user-profile/print', **{'?user': username})
                 if user_profiles:
                     user_profile = user_profiles[0]
                     # Merge user and user profile information
                     user_info = {
-                        'user': user.get('name'),
+                        'user': username,
                         'profile': user_profile.get('profile'),
                         'state': user_profile.get('state'),
                         'end-time': user_profile.get('end-time')
