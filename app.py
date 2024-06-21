@@ -17,4 +17,4 @@ def check_account():
         return render_template('result.html', error="User not found")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
