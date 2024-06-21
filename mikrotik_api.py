@@ -10,27 +10,27 @@ def get_user_profile_info(username):
     host, port = (API_HOST.split(':') + [None])[:2]
     port = int(port) if port else 8728  # Default port is 8728
 
-    connection = connect(
-        username=API_USER,
-        password=API_PASSWORD,
-        host=host,
-        port=port,
-    )
-
     try:
-        # Execute '/user-manager/user/print' command to find user
-        users = connection('/user-manager/user/print')
+        # Connect to MikroTik router
+        connection = connect(
+            username=API_USER,
+            password=API_PASSWORD,
+            host=host,
+            port=port,
+        )
 
-        for user in users:
-            if user.get('name') == username:
-                # Fetch user profile information from user-profiles menu
-                user_profile_info = connection('/user-manager/user-profile/print',
-                                               **{'?user': user['.id']})
+        # Find user by username
+        users = connection('/user-manager/user/print', **{'?name': username})
+        if users:
+            user_id = users[0].get('.id')
+            if user_id:
+                # Fetch user profile information
+                user_profile_info = connection('/user-manager/user-profile/print', **{'?user': user_id})
                 if user_profile_info:
-                    return user_profile_info[0]  # Assuming only one profile per user
+                    return user_profile_info[0]
 
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error fetching user profile information: {e}")
 
     return None
 
