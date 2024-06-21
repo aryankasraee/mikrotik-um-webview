@@ -23,7 +23,19 @@ def get_user_info(username):
 
         for user in users:
             if user.get('name') == username:
-                return user
+                user_id = user.get('.id')
+                # Fetch user profile information based on user ID
+                user_profiles = connection('/user-manager/user-profile/print', **{'?user': user_id})
+                if user_profiles:
+                    user_profile = user_profiles[0]
+                    # Merge user and user profile information
+                    user_info = {
+                        'user': user.get('name'),
+                        'profile': user_profile.get('profile'),
+                        'state': user_profile.get('state'),
+                        'end-time': user_profile.get('end-time')
+                    }
+                    return user_info
 
     except Exception as e:
         print(f"Error: {e}")
